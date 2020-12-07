@@ -247,11 +247,11 @@ class UserSettingsHolder:
 
     def __setattr__(self, name, value):
         self._deleted.discard(name)
-        if name == 'PASSWORD_RESET_TIMEOUT_DAYS':
-            setattr(self, 'PASSWORD_RESET_TIMEOUT', value * 60 * 60 * 24)
-            warnings.warn(PASSWORD_RESET_TIMEOUT_DAYS_DEPRECATED_MSG, RemovedInDjango40Warning)
         if name == 'DEFAULT_HASHING_ALGORITHM':
             warnings.warn(DEFAULT_HASHING_ALGORITHM_DEPRECATED_MSG, RemovedInDjango40Warning)
+        elif name == 'PASSWORD_RESET_TIMEOUT_DAYS':
+            setattr(self, 'PASSWORD_RESET_TIMEOUT', value * 60 * 60 * 24)
+            warnings.warn(PASSWORD_RESET_TIMEOUT_DAYS_DEPRECATED_MSG, RemovedInDjango40Warning)
         super().__setattr__(name, value)
 
     def __delattr__(self, name):

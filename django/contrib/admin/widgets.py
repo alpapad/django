@@ -332,7 +332,7 @@ class AdminURLFieldWidget(forms.URLInput):
 
     def get_context(self, name, value, attrs):
         try:
-            self.validator(value if value else '')
+            self.validator(value or '')
             url_valid = True
         except ValidationError:
             url_valid = False

@@ -69,8 +69,6 @@ class Command(BaseCommand):
         if self.migration_name and not self.migration_name.isidentifier():
             raise CommandError('The migration name must be a valid Python identifier.')
         self.include_header = options['include_header']
-        check_changes = options['check_changes']
-
         # Make sure the app they asked for exists
         app_labels = set(app_labels)
         has_bad_labels = False
@@ -188,6 +186,8 @@ class Command(BaseCommand):
                     self.stdout.write("No changes detected")
         else:
             self.write_migration_files(changes)
+            check_changes = options['check_changes']
+
             if check_changes:
                 sys.exit(1)
 

@@ -72,9 +72,6 @@ class Apps:
         # populate() might be called by two threads in parallel on servers
         # that create threads before initializing the WSGI callable.
         with self._lock:
-            if self.ready:
-                return
-
             # An RLock prevents other threads from entering this section. The
             # compare and set operation below is atomic.
             if self.loading:
@@ -85,10 +82,7 @@ class Apps:
 
             # Phase 1: initialize app configs and import app modules.
             for entry in installed_apps:
-                if isinstance(entry, AppConfig):
-                    app_config = entry
-                else:
-                    app_config = AppConfig.create(entry)
+                app_config = entry if isinstance(entry, AppConfig) else AppConfig.create(entry)
                 if app_config.label in self.app_configs:
                     raise ImproperlyConfigured(
                         "Application labels aren't unique, "
